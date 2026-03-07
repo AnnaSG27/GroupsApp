@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="col-md-5 col-lg-4">
+        <div class="card p-4 shadow-lg">
+            <h3 class="mb-3 text-center">Crear una cuenta</h3>
+            <p class="text-muted text-center mb-4">Únete a tus grupos y conversa.</p>
+
+            <form method="POST" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger py-2">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label class="form-label">Usuario</label>
+                    {{ form.username }}
+
+                    {% if form.username.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.username.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Correo electrónico</label>
+                    {{ form.email }}
+
+                    {% if form.email.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.email.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Contraseña</label>
+                    {{ form.password1 }}
+
+                    {% if form.password1.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.password1.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Repite la contraseña</label>
+                    {{ form.password2 }}
+
+                    {% if form.password2.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.password2.errors|striptags }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mt-2">
+                    Registrarse
+                </button>
+            </form>
+
+            <p class="text-muted small mt-3 mb-0 text-center">
+                ¿Ya tienes cuenta?
+                <a href="{% url 'login' %}" class="text-decoration-none">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+# Gunicorn y Sockets
+*.ctl
+*.sock
+
+# Entornos virtuales
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Base de datos local 
+posgres_data/
