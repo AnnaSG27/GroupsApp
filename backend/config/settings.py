@@ -141,6 +141,10 @@ REST_FRAMEWORK = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+ALLOWED_HOSTS = [
+    "98.93.204.127"
+]
+
 # CSRF Configuration for development
 CSRF_COOKIE_SECURE = False  # Set True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False  # JS needs to read it for AJAX
