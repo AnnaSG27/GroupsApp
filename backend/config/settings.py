@@ -11,8 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "1"
 
-ALLOWED_HOSTS = ["*"]  # Para Docker local
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -142,13 +140,19 @@ REST_FRAMEWORK = {
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ALLOWED_HOSTS = [
-    "98.93.204.127"
+    "98.93.204.127",
+    "localhost",
+    "127.0.0.1"
 ]
 
 # CSRF Configuration for development
 CSRF_COOKIE_SECURE = False  # Set True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False  # JS needs to read it for AJAX
 CSRF_COOKIE_AGE = 31449600  # One year
-CSRF_COOKIE_DOMAIN = 'localhost'  # For localhost development
-CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000', "http://98.93.204.127:8000"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "http://98.93.204.127",
+    "http://98.93.204.127:8000"
+]
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
