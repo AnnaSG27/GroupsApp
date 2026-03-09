@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<style>
+    .input-dark::placeholder {
+        color: #9ca3af;
+        opacity: 1;
+    }
+</style>
 <div class="row" style="min-height: calc(100vh - 80px);">
     <div class="col-3 border-end border-secondary">
         {% if direct_memberships %}
@@ -36,11 +42,13 @@
 
             <input type="text"
                    name="name"
-                   class="form-control input-dark mb-2"
+                   class="form-control input-dark mb-2 text-light"
+                   style="color:#ffffff;"
                    placeholder="Nombre del nuevo grupo">
 
             <textarea name="description"
-                      class="form-control input-dark mb-2"
+                      class="form-control input-dark mb-2 text-light"
+                      style="color:#ffffff;"
                       rows="2"
                       placeholder="Descripción (opcional)"></textarea>
 
