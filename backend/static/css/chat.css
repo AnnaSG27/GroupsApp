@@ -1,0 +1,68 @@
+.messages { 
+    background: #2f3136; 
+    color: #ddd; 
+}
+
+.message { 
+    background: #40444b; 
+    color: #fff; 
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 70%;
+}
+
+.message.me { 
+    background: #3ba55d; 
+    color: #fff; 
+    margin-left: auto;
+}
+
+.message a { 
+    color: #00aff4; 
+}
+
+.input-dark { 
+    background-color: #2f3136; 
+    color: #ddd; 
+    border: 1px solid #40444b;
+}
+
+.input-dark::placeholder {
+    color: #aaa;
+}
+
+.chat-composer {
+    background: #2b2d31;
+}
+
+/* group info panel (like WhatsApp info sidebar) */
+.group-info-panel {
+    position: fixed;
+    top: 0;
+    right: -320px;
+    width: 320px;
+    height: 100vh;
+    background: #202225;
+    border-left: 1px solid #40444b;
+    transition: right 0.25s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+}
+
+.group-info-panel.open {
+    right: 0;
+}
+
+.group-info-header {
+    padding: 12px;
+    border-bottom: 1px solid #40444b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group-info-body {
+    padding: 10px;
+    overflow-y: auto;
+}
