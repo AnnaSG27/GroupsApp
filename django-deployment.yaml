@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: django
+  template:
+    metadata:
+      labels:
+        app: django
+    spec:
+      imagePullSecrets:
+      - name: ecr-secret
+      containers:
+      - name: django
+        image: 706592418101.dkr.ecr.us-east-1.amazonaws.com/groupsapp-django:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: POSTGRES_HOST
+          value: groupsapp-db.c76r607z8oky.us-east-1.rds.amazonaws.com
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          value: postgres
+        - name: POSTGRES_DB
+          value: groupsapp
+        - name: SECRET_KEY
+          value: supersecretkey123
