@@ -33,5 +33,14 @@ services:
     env_file:
       - .env
 
+  messaging:
+    build: ./services/messaging_service
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
 volumes:
   postgres_data:

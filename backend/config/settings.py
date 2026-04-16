@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'channels',  # WebSocket support
     'users',
     'groups',
-    'messaging',
     'core',
 ]
 
@@ -82,8 +81,8 @@ if USE_POSTGRES and os.getenv("POSTGRES_DB"):
             'NAME': os.getenv("POSTGRES_DB"),
             'USER': os.getenv("POSTGRES_USER"),
             'PASSWORD': os.getenv("POSTGRES_PASSWORD"),
-            'HOST': os.getenv("POSTGRES_HOST"),
-            'PORT': os.getenv("POSTGRES_PORT"),
+            'HOST': os.getenv("POSTGRES_HOST", "localhost"),
+            'PORT': os.getenv("POSTGRES_PORT", "5432"),
         }
     }
 else:
@@ -146,6 +145,7 @@ CSRF_COOKIE_SECURE = False  # Set True in production with HTTPS
 CSRF_COOKIE_HTTPONLY = False  # JS needs to read it for AJAX
 CSRF_COOKIE_AGE = 31449600  # One year
 CSRF_TRUSTED_ORIGINS = [
-    "*"
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
 ]
 CSRF_FAILURE_VIEW = 'django.views.csrf.csrf_failure'
