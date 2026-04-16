@@ -1,0 +1,49 @@
+body {
+    background: #1e1f22;
+    color: #f2f3f5;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #1e1f22;
+    border-bottom: 1px solid #2b2d31;
+}
+
+.card {
+    background-color: #313338;
+    border: 1px solid #202225;
+    border-radius: 16px;
+}
+
+.btn-primary {
+    background-color: #5865f2;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #4752c4;
+}
+
+.text-muted {
+    color: #b5bac1 !important;
+}
+
+.input-dark {
+    background-color: #1e1f22;
+    border: 1px solid #2b2d31;
+    color: #f2f3f5;
+}
+
+.input-dark:focus {
+    border-color: #5865f2;
+    box-shadow: none;
+    background-color: #1e1f22;
+    color: #f2f3f5;
+}
+
+.auth-wrapper {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
