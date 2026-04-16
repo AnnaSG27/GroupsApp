@@ -40,7 +40,16 @@ services:
     env_file:
       - .env
     depends_on:
-      - db
+      - mongodb
+
+  mongodb:
+    image: mongo:7
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
 
 volumes:
   postgres_data:
+  mongo_data:
