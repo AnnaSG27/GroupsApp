@@ -71,11 +71,11 @@
         </div>
         <div class="messages flex-grow-1 overflow-auto p-3">
             {% for message in chat_messages %}
-                <div class="message {% if message.sender == request.user %}me{% endif %} mb-2">
-                    <strong>{{ message.sender.username }}</strong><br>
+                <div class="message {% if message.sender_id == request.user.id %}me{% endif %} mb-2">
+                    <strong>{{ message.sender_id }}</strong><br>
                     {{ message.content|linebreaksbr }}
                     {% if message.file %}<br>
-                        <a href="{{ message.file.url }}">Archivo</a>
+                        <a href="{{ message.file }}">Archivo</a>
                     {% endif %}
                     <div class="text-muted small">{{ message.created_at }}</div>
                 </div>
