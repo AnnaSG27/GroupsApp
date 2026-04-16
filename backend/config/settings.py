@@ -24,7 +24,6 @@ INSTALLED_APPS = [
     'channels',  # WebSocket support
     'users',
     'groups',
-    'messaging',
     'core',
 ]
 

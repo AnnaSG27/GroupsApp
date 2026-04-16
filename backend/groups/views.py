@@ -11,7 +11,6 @@ import requests
 
 from .models import Group, GroupMembership
 from .serializers import GroupSerializer, GroupMembershipSerializer
-from messaging.models import Message
 
 User = get_user_model()
 
