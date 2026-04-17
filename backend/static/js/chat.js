@@ -21,11 +21,19 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    function scrollBottom() {
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    function isNearBottom(container, threshold = 100) {
+        return container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
+    }
+
+    function scrollBottom(force = false) {
+        if (!messagesContainer) return;
+        if (force || isNearBottom(messagesContainer)) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
     }
 
     socket.onmessage = function(e) {
+        const wasNearBottom = isNearBottom(messagesContainer);
         const data = JSON.parse(e.data);
         const div = document.createElement('div');
         div.className = 'message ' + (data.sender === currentUser ? 'me' : '') + ' mb-2';
@@ -33,14 +41,16 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.file_url) {
             inner += '<br><a href="' + data.file_url + '">Archivo</a>';
         }
-        inner += '<div class="text-muted small">' + new Date(data.created_at).toLocaleString() + '</div>';
+        inner += '<div class="text-muted small">' + new Date(data.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
         div.innerHTML = inner;
         messagesContainer.appendChild(div);
-        scrollBottom();
+        if (wasNearBottom) {
+            scrollBottom(true);
+        }
     };
 
     socket.onopen = function() {
-        scrollBottom();
+        scrollBottom(true);
     };
 
     socket.onclose = function(e) {
