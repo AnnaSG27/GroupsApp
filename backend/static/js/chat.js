@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.file_url) {
             inner += '<br><a href="' + data.file_url + '">Archivo</a>';
         }
-        inner += '<div class="text-muted small">' + new Date(data.created_at).toLocaleString() + '</div>';
+        inner += '<div class="text-muted small">' + new Date(data.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + '</div>';
         div.innerHTML = inner;
         messagesContainer.appendChild(div);
         if (wasNearBottom) {
