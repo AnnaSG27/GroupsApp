@@ -118,6 +118,7 @@ def chat_view(request, group_id):
                         "http://messaging:8001/api/messages/",
                         json={
                             "sender_id": request.user.id,
+                            "sender_name": request.user.username,
                             "group_id": group.id,
                             "content": content
                         }

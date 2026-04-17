@@ -1,16 +1,12 @@
 from rest_framework import serializers
-from .models import Message
 
 
-class MessageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Message
-        fields = [
-            'id',
-            'sender_id',
-            'group_id',
-            'content',
-            'file',
-            'status',
-            'created_at'
-        ]
+class MessageSerializer(serializers.Serializer):
+    id = serializers.CharField(read_only=True)
+    sender_id = serializers.IntegerField()
+    sender_name = serializers.CharField()
+    group_id = serializers.IntegerField()
+    content = serializers.CharField()
+    file = serializers.CharField(required=False, allow_null=True, allow_blank=True)
+    status = serializers.CharField(required=False)
+    created_at = serializers.DateTimeField(read_only=True)
