@@ -7,6 +7,9 @@ from datetime import datetime, timezone
 from rest_framework.response import Response
 from rest_framework import status
 from bson import ObjectId
+import boto3
+import uuid
+from django.conf import settings
 
 
 def serialize_doc(doc):
@@ -24,6 +27,24 @@ def serialize_doc(doc):
         return str(doc)
     else:
         return doc
+    
+def upload_file_to_s3(file):
+    s3 = boto3.client('s3')
+
+    filename = f"{uuid.uuid4()}_{file.name}"
+
+    s3.upload_fileobj(
+        file,
+        "groupsapp-files-jose-anna",
+        filename,
+        ExtraArgs={
+            "ContentType": file.content_type
+        }
+    )
+
+    file_url = f"https://groupsapp-files-jose-anna.s3.amazonaws.com/{filename}"
+
+    return file_url
 
 
 class MessageViewSet(viewsets.ViewSet):
@@ -47,13 +68,19 @@ class MessageViewSet(viewsets.ViewSet):
 
     def create(self, request):
         data = request.data
+        
+        uploaded_file = request.FILES.get('file')
+
+        file_url = None
+        if uploaded_file:
+            file_url = upload_file_to_s3(uploaded_file)
 
         message = {
-            'sender_id': data.get('sender_id'),
+            'sender_id': int(data.get('sender_id')),
             'sender_name': data.get('sender_name'),
-            'group_id': data.get('group_id'),
+            'group_id': int(data.get('group_id')),
             'content': data.get('content'),
-            'file': str(data.get('file')) if data.get('file') else None,
+            'file': file_url,
             'status': 'sent',
             'created_at': datetime.now(timezone.utc).isoformat()
         }
