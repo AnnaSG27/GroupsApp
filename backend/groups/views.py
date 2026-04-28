@@ -111,17 +111,25 @@ def chat_view(request, group_id):
         if "send_message" in request.POST:
             content = request.POST.get("content", "").strip()
             file = request.FILES.get("file")
+            
+            data = {
+                "sender_id": request.user.id,
+                "sender_name": request.user.username,
+                "group_id": group.id,
+                "content": content
+            }
+
+            files = {}
+            if file:
+                files["file"] = (file.name, file, file.content_type)
+            
 
             if content or file:
                 try:
                     response = requests.post(
                         "http://messaging:8001/api/messages/",
-                        json={
-                            "sender_id": request.user.id,
-                            "sender_name": request.user.username,
-                            "group_id": group.id,
-                            "content": content
-                        }
+                        data=data,
+                        files=files
                     )
 
                     if response.status_code != 201:
