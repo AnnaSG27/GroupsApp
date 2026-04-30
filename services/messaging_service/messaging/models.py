@@ -1,6 +1,4 @@
 from django.db import models
-from django.conf import settings
-from groups.models import Group
 
 
 class Message(models.Model):
@@ -10,17 +8,9 @@ class Message(models.Model):
         ('read', 'Read'),
     )
 
-    sender = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name='sent_messages'
-    )
+    sender_id = models.IntegerField()
 
-    group = models.ForeignKey(
-        Group,
-        on_delete=models.CASCADE,
-        related_name='messages'
-    )
+    group_id = models.IntegerField()
 
     content = models.TextField(blank=True)
     file = models.FileField(upload_to='messages/files/', blank=True, null=True)
@@ -29,4 +19,4 @@ class Message(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.sender.username} - {self.group.name}"
+        return f"Message {self.id} from user {self.sender_id} in group {self.group_id}"

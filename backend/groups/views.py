@@ -7,10 +7,10 @@ from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.contrib.auth import get_user_model
 from django.contrib import messages
+import requests
 
 from .models import Group, GroupMembership
 from .serializers import GroupSerializer, GroupMembershipSerializer
-from messaging.models import Message
 
 User = get_user_model()
 
@@ -83,7 +83,25 @@ def chat_view(request, group_id):
         messages.error(request, "No perteneces a este grupo.")
         return redirect("dashboard")
 
-    chat_messages = group.messages.select_related("sender").order_by("created_at")
+    # Obtener mensajes desde messaging-service
+    try:
+        response = requests.get(
+            f"http://messaging:8001/api/messages/?group_id={group.id}"
+        )
+        if response.status_code == 200:
+            data = response.json()
+
+            if isinstance(data, dict) and 'results' in data:
+                chat_messages = data['results']
+            else:
+                chat_messages = data
+        else:
+            chat_messages = []
+            messages.error(request, f"Status: {response.status_code} - {response.text}")
+    except Exception as e:
+        chat_messages = []
+        messages.error(request, f"Error de conexión con messaging-service: {str(e)}")
+
     members = group.memberships.select_related("user")
     # also collect the user's groups for the sidebar
     user_groups = request.user.memberships.select_related("group")
@@ -93,28 +111,31 @@ def chat_view(request, group_id):
         if "send_message" in request.POST:
             content = request.POST.get("content", "").strip()
             file = request.FILES.get("file")
+            
+            data = {
+                "sender_id": request.user.id,
+                "sender_name": request.user.username,
+                "group_id": group.id,
+                "content": content
+            }
+
+            files = {}
+            if file:
+                files["file"] = (file.name, file, file.content_type)
+            
 
             if content or file:
-                msg = Message.objects.create(
-                    sender=request.user,
-                    group=group,
-                    content=content,
-                    file=file
-                )
-                # broadcast via channels
-                channel_layer = get_channel_layer()
-                async_to_sync(channel_layer.group_send)(
-                    f"group_{group.id}",
-                    {
-                        'type': 'chat.message',
-                        'message': {
-                            'sender': request.user.username,
-                            'content': msg.content,
-                            'file_url': msg.file.url if msg.file else '',
-                            'created_at': msg.created_at.isoformat(),
-                        }
-                    }
-                )
+                try:
+                    response = requests.post(
+                        "http://messaging:8001/api/messages/",
+                        data=data,
+                        files=files
+                    )
+
+                    if response.status_code != 201:
+                        messages.error(request, f"Error {response.status_code}: {response.text}")
+                except Exception as e:
+                    messages.error(request, f"Error de conexión con messaging-service: {str(e)}")
             return redirect("chat", group_id=group.id)
 
         # handle invite user

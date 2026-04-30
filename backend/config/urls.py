@@ -6,14 +6,12 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from groups.views import GroupViewSet, GroupMembershipViewSet, dashboard_view, chat_view, direct_message_view
-from messaging.views import MessageViewSet
 from users.views import login_view, logout_view, register_view
 
 
 router = DefaultRouter()
 router.register(r"groups", GroupViewSet, basename="group")
 router.register(r"memberships", GroupMembershipViewSet, basename="membership")
-router.register(r"messages", MessageViewSet, basename="message")
 
 
 urlpatterns = [
