@@ -86,7 +86,7 @@ def chat_view(request, group_id):
     # Obtener mensajes desde messaging-service
     try:
         response = requests.get(
-            f"http://messaging:8000/api/messages/?group_id={group.id}"
+            f"http://messaging:8001/api/messages/?group_id={group.id}"
         )
         if response.status_code == 200:
             data = response.json()
@@ -127,7 +127,7 @@ def chat_view(request, group_id):
             if content or file:
                 try:
                     response = requests.post(
-                        "http://messaging:8000/api/messages/",
+                        "http://messaging:8001/api/messages/",
                         data=data,
                         files=files
                     )

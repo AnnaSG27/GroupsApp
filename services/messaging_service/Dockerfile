@@ -11,4 +11,4 @@ COPY . .
 
 EXPOSE 8001
 
-CMD ["daphne", "-b", "0.0.0.0", "-p", "8001", "messaging.asgi:application"]
+CMD ["daphne", "-b", "0.0.0.0", "-p", "8001", "messaging_service.asgi:application"]
